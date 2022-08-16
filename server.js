@@ -41,6 +41,19 @@ app.post('/register', function(req, res) {
   }
 })
 
+app.post('/unregister', function(req, res) {
+  console.log('/unregister')
+  const subscription = req.body.subscription
+  const { endpoint } = subscription
+
+  if (subscriptions[endpoint]) {
+    console.log(`Subscription unregistered: ${endpoint}`)
+    delete subscriptions[endpoint]
+  }
+
+  res.sendStatus(201)
+})
+
 const port = process.env.PORT || 3003
 
 app.listen(port, (err) => {

@@ -43,6 +43,13 @@ const app = express()
 
 app.use(bodyParser.json())
 
+app.use(function setServiceWorkerHeader(req, res, next) {
+  if (req.url.endsWith('service-worker.js')) {
+    res.header('Cache-control', 'public, max-age=0')
+  }
+  next()
+})
+
 app.post('/register', function(req, res) {
   try {
     console.log('/register')

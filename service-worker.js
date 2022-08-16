@@ -11,6 +11,16 @@ importScripts('service-worker-utils.js')
 // extension, simply do `importScripts('path/to/file.js')`.
 // The path should be relative to the file `manifest.json`.
 
+chrome.runtime.onInstalled.addListener(({ reason, previousVersion }) => {
+  console.log('Welcome to the extension!', reason, previousVersion)
+  initiateSubscription()
+})
+
+chrome.runtime.onStartup.addListener(() => {
+  console.log('Extension started')
+  initiateSubscription()
+})
+
 async function initiateSubscription() {
   const subscription = await self.registration.pushManager.getSubscription()
 

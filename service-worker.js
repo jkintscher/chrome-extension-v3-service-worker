@@ -10,3 +10,58 @@ importScripts('service-worker-utils.js')
 // If you want to import a file that is deeper in the file hierarchy of your
 // extension, simply do `importScripts('path/to/file.js')`.
 // The path should be relative to the file `manifest.json`.
+
+chrome.runtime.onInstalled.addListener(({ reason, previousVersion }) => {
+  console.log('Welcome to the extension!', reason, previousVersion)
+  initiateSubscription()
+})
+
+chrome.runtime.onStartup.addListener(() => {
+  console.log('Extension started')
+  initiateSubscription()
+})
+
+chrome.runtime.onSuspend.addListener(() => {
+  // See about initiating an unsubscribe for the subscription, but since that’s
+  // retrieved asynchronously, we might not be able to. The docs say:
+  //
+  //   “Note that since the page is unloading, any asynchronous operations
+  //   started while handling this event are not guaranteed to complete.”
+})
+
+self.addEventListener('push', function(event) {
+  console.log('Received push message: ', event)
+})
+
+async function initiateSubscription() {
+  const subscription = await self.registration.pushManager.getSubscription()
+
+  if (subscription) {
+    console.log('Already subscribed!', subscription.endpoint)
+    return
+  }
+
+  subscribe()
+}
+
+async function subscribe() {
+  const vapidPublicKey = 'BA6FsKnQSkEaHyww8ZJArtca-30SYPlq7034KJUc3PbHVyCQ9d8hzdwCkIgWQ6wC8uuEvm1IJm7hrht_qAAzLpc'
+  const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey)
+
+  const subscription = await self.registration.pushManager.subscribe({
+    applicationServerKey: convertedVapidKey,
+    userVisibleOnly: true,
+  });
+
+  console.log('Subscribed at', subscription.endpoint);
+
+  fetch('http://localhost:3003/register', {
+    // TODO: Include current account/user here, and access token to authorize
+    body: JSON.stringify({ subscription }),
+    headers: { 'Content-type': 'application/json' },
+    method: 'post',
+  })
+    .then((response) => {
+      console.log('Status: ', response.status)
+    })
+}

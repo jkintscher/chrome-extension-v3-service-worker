@@ -1,0 +1,13 @@
+{
+  "name": "harvest-chrome-v3-push-server",
+  "version": "0.1.0",
+  "description": "A simple server to collect subscriptions and send payloads",
+  "private": true,
+  "author": "Joschka",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "engines": {
+    "node": "12"
+  }
+}

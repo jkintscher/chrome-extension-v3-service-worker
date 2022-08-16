@@ -21,6 +21,14 @@ chrome.runtime.onStartup.addListener(() => {
   initiateSubscription()
 })
 
+chrome.runtime.onSuspend.addListener(() => {
+  // See about initiating an unsubscribe for the subscription, but since that’s
+  // retrieved asynchronously, we might not be able to. The docs say:
+  //
+  //   “Note that since the page is unloading, any asynchronous operations
+  //   started while handling this event are not guaranteed to complete.”
+})
+
 self.addEventListener('push', function(event) {
   console.log('Received push message: ', event)
 })

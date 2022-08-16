@@ -21,6 +21,10 @@ chrome.runtime.onStartup.addListener(() => {
   initiateSubscription()
 })
 
+self.addEventListener('push', function(event) {
+  console.log('Received push message: ', event)
+})
+
 async function initiateSubscription() {
   const subscription = await self.registration.pushManager.getSubscription()
 

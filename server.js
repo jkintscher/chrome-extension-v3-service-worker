@@ -16,11 +16,30 @@ webPush.setVapidDetails(
   keys.privateKey
 )
 
+const subscriptions = {};
+
 // Configure middleware and routes
 
 const app = express()
 
 app.use(bodyParser.json())
+
+app.post('/register', function(req, res) {
+  try {
+    console.log('/register')
+    const subscription = req.body.subscription
+    const { endpoint } = subscription
+
+    if (!subscriptions[endpoint]) {
+      console.log(`Subscription registered: ${endpoint}`)
+      subscriptions[endpoint] = subscription
+    }
+
+    res.sendStatus(201)
+  } catch(e) {
+    console.log('Something broke:', e)
+  }
+})
 
 const port = process.env.PORT || 3003
 

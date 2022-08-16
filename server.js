@@ -18,6 +18,25 @@ webPush.setVapidDetails(
 
 const subscriptions = {};
 
+async function sendNotification(subscription) {
+  const { endpoint } = subscription
+  console.log(`Sending notification to ${endpoint}`)
+
+  try {
+    await webPush.sendNotification(subscription, 'My push event')
+    console.log('Push Application Server - Notification sent to ' + endpoint)
+  } catch (e) {
+    console.log('ERROR in sending Notification, endpoint removed ' + endpoint)
+    delete subscriptions[endpoint]
+  }
+}
+
+setInterval(function() {
+  const items = Object.values(subscriptions)
+  console.log(`Pinging ${items.length} subscriptions`)
+  items.forEach(sendNotification)
+}, 5000)
+
 // Configure middleware and routes
 
 const app = express()

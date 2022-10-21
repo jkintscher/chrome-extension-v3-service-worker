@@ -3,8 +3,6 @@
 // inside the service worker.
 // The importation is done in the file `service-worker.js`.
 
-console.log("External file is also loaded!")
-
 // This function is needed because Chrome doesn't accept a base64 encoded string
 // as value for applicationServerKey in pushManager.subscribe yet
 // https://bugs.chromium.org/p/chromium/issues/detail?id=802280

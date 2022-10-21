@@ -57,13 +57,13 @@ app.post('/register', function(req, res) {
     const { endpoint } = subscription
 
     if (!subscriptions[endpoint]) {
-      console.log(`Subscription registered: ${endpoint}`)
+      console.log(`  Subscription registered: ${endpoint}`)
       subscriptions[endpoint] = subscription
     }
 
     res.sendStatus(201)
   } catch(e) {
-    console.log('Something broke:', e)
+    console.log('  Something broke:', e)
   }
 })
 
@@ -73,7 +73,7 @@ app.post('/unregister', function(req, res) {
   const { endpoint } = subscription
 
   if (subscriptions[endpoint]) {
-    console.log(`Subscription unregistered: ${endpoint}`)
+    console.log(`  Subscription unregistered: ${endpoint}`)
     delete subscriptions[endpoint]
   }
 

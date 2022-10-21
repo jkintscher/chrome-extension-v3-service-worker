@@ -29,6 +29,16 @@ chrome.runtime.onSuspend.addListener(() => {
   //   started while handling this event are not guaranteed to complete.”
 
   console.log('onSuspend')
+
+  fetch('http://localhost:3003/unregister', {
+    // TODO: Include current account/user here, and access token to authorize
+    body: JSON.stringify({ subscription }),
+    headers: { 'Content-type': 'application/json' },
+    method: 'delete',
+  })
+    .then((response) => {
+      console.log('Unsubscribed')
+    })
 })
 
 self.addEventListener('push', function(event) {

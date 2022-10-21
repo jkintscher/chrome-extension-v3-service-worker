@@ -67,7 +67,7 @@ app.post('/register', function(req, res) {
   }
 })
 
-app.post('/unregister', function(req, res) {
+app.delete('/unregister', function(req, res) {
   console.log('/unregister')
   const subscription = req.body.subscription
   const { endpoint } = subscription
